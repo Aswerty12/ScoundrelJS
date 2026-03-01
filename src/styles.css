@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+:root {
+  --scoundrel-bg: #fdfbf7;
+  --scoundrel-ink: #2d2a2e;
+  --scoundrel-red: #e11d48;
+  --scoundrel-gold: #d97706;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: radial-gradient(circle at 20% 20%, #fff7eb 0%, var(--scoundrel-bg) 45%, #f3efe7 100%);
+  color: var(--scoundrel-ink);
+  font-family: 'Trebuchet MS', 'Gill Sans', 'Avenir Next', sans-serif;
+}
+
+button {
+  font: inherit;
+}

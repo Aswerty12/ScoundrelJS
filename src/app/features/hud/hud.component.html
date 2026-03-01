@@ -1,0 +1,44 @@
+<section class="grid gap-4 rounded-2xl border border-black/10 bg-white/75 p-4 shadow-sm backdrop-blur md:grid-cols-3">
+  <div>
+    <p class="text-xs font-semibold uppercase tracking-[0.15em] text-zinc-500">Health</p>
+    <p
+      class="mt-1 text-3xl font-black"
+      [ngClass]="{
+        'text-rose-600': hpDelta() < 0,
+        'text-emerald-600': hpDelta() > 0,
+        'text-[var(--scoundrel-ink)]': hpDelta() === 0
+      }"
+    >
+      {{ hp() }}
+    </p>
+  </div>
+
+  <div>
+    <p class="text-xs font-semibold uppercase tracking-[0.15em] text-zinc-500">Deck / Discard</p>
+    <p class="mt-1 text-lg font-bold text-[var(--scoundrel-ink)]">{{ deckCount() }} / {{ discardCount() }}</p>
+    <div class="mt-2 flex gap-2">
+      <img class="h-12 w-[34px] rounded border border-black/20 object-cover" src="/playing-cards/back_dark.png" alt="Deck" />
+      <img class="h-12 w-[34px] rounded border border-black/20 object-cover" src="/playing-cards/back_dark.png" alt="Discard" />
+    </div>
+  </div>
+
+  <div>
+    <p class="text-xs font-semibold uppercase tracking-[0.15em] text-zinc-500">Equipped Weapon</p>
+    @if (weapon()) {
+      <div class="mt-2 flex items-center gap-3">
+        <img
+          class="h-14 w-[40px] rounded border border-black/20 object-cover"
+          [src]="weapon()!.card.imagePath"
+          [alt]="weapon()!.card.rank + ' of ' + weapon()!.card.suit"
+        />
+        <div class="text-sm">
+          <p class="font-bold">DMG {{ weapon()!.damage }}</p>
+          <p class="text-zinc-600">Max target {{ weapon()!.lastSlainValue === infinity ? 'Any' : weapon()!.lastSlainValue }}</p>
+          <p class="text-zinc-600">Slain {{ weapon()!.slainByThisWeapon.length }}</p>
+        </div>
+      </div>
+    } @else {
+      <p class="mt-2 text-sm text-zinc-600">No weapon equipped</p>
+    }
+  </div>
+</section>

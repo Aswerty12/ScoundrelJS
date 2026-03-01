@@ -1,0 +1,33 @@
+@if (visible()) {
+  <div class="fixed inset-0 z-30 flex items-center justify-center bg-black/45 p-4">
+    <div class="w-full max-w-sm rounded-2xl bg-white p-5 shadow-xl">
+      <h3 class="text-lg font-bold text-[var(--scoundrel-ink)]">Choose Combat Mode</h3>
+      <p class="mt-2 text-sm text-zinc-700">Monster value: {{ monsterValue() }}</p>
+
+      <div class="mt-4 space-y-2">
+        <button
+          type="button"
+          class="w-full rounded-lg bg-[var(--scoundrel-gold)] px-3 py-2 text-sm font-bold text-black"
+          (click)="chooseWeapon.emit()"
+        >
+          Use Weapon (take {{ weaponDamageTaken() }} damage)
+        </button>
+        <button
+          type="button"
+          class="w-full rounded-lg bg-zinc-900 px-3 py-2 text-sm font-bold text-white"
+          (click)="chooseBarehanded.emit()"
+        >
+          Barehanded (take {{ barehandDamageTaken() }} damage)
+        </button>
+      </div>
+
+      <button
+        type="button"
+        class="mt-3 w-full rounded-lg bg-zinc-200 px-3 py-2 text-sm font-semibold text-zinc-700"
+        (click)="cancel.emit()"
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+}

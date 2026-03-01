@@ -1,0 +1,20 @@
+<button
+  type="button"
+  class="group relative aspect-[242/340] w-full overflow-hidden rounded-xl border-2 bg-white text-left shadow-md transition hover:-translate-y-0.5 hover:shadow-lg disabled:cursor-not-allowed"
+  [class]="suitClassMap[card().suit]"
+  [class.opacity-45]="dimmed()"
+  [disabled]="!interactable()"
+  (click)="cardClick.emit()"
+  (mouseenter)="cardEnter.emit()"
+  (mouseleave)="cardLeave.emit()"
+>
+  <img class="h-full w-full object-cover" [src]="card().imagePath" [alt]="card().rank + ' of ' + card().suit" />
+
+  <div class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent p-2 text-white">
+    <p class="text-xs font-semibold uppercase tracking-wide">{{ card().type }}</p>
+    <p class="text-xs">Value {{ card().value }}</p>
+    @if (previewText()) {
+      <p class="mt-1 rounded bg-black/40 px-1.5 py-1 text-[11px] leading-tight">{{ previewText() }}</p>
+    }
+  </div>
+</button>

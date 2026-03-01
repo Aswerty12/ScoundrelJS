@@ -1,0 +1,7 @@
+<main class="min-h-screen bg-[var(--scoundrel-bg)] text-[var(--scoundrel-ink)]">
+  @if (game.phase() === 'start') {
+    <app-start-screen (start)="game.startGame()" />
+  } @else {
+    <app-game-board />
+  }
+</main>
