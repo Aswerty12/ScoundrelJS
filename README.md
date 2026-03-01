@@ -1,5 +1,7 @@
 # Scoundreljs
 
+First project made using Codex. Provided input was the original scoundrel rules as provided by  Zach Gage and Kurt Bieg, as well as a plan overview I had generated using Gemini a few months earlier alongside art assets detailed in CARD_ASSETs_CREDITS.md . Project was one-shot created on a free plan with minimal additions.
+
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.0.
 
 ## Development server
