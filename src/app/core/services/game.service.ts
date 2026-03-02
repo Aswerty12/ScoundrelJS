@@ -22,6 +22,9 @@ export class GameService {
   readonly pendingCombatTarget = signal<Card | null>(null);
   readonly pendingForcedBarehandTarget = signal<Card | null>(null);
   readonly roomStartSnapshot = signal<TurnSnapshot | null>(null);
+  readonly cardsUntilBottomSegment = signal<number>(0);
+  readonly bottomSegmentCardsRemaining = signal<number>(0);
+  readonly bottomSegmentEncountered = signal<boolean>(false);
 
   readonly resolutionLog = signal<ResolutionEvent[]>([]);
   readonly lastMessage = signal<string>('Press Start Game to begin.');
@@ -35,6 +38,9 @@ export class GameService {
   readonly currentRoomDamage = computed(() => this.room().filter((card) => card.type === 'monster').reduce((sum, card) => sum + card.value, 0));
 
   readonly isFinalPartialRoom = computed(() => this.deck().length === 0 && this.room().length > 0 && this.room().length < 4);
+  readonly isInScoundrelEndgame = computed(
+    () => this.bottomSegmentEncountered() || (this.cardsUntilBottomSegment() === 0 && this.bottomSegmentCardsRemaining() > 0),
+  );
 
   readonly canRunAway = computed(() => {
     if (this.phase() !== 'room-ready') return false;
@@ -83,7 +89,8 @@ export class GameService {
   });
 
   startGame(): void {
-    this.deck.set(createScoundrelDeck());
+    const freshDeck = createScoundrelDeck();
+    this.deck.set(freshDeck);
     this.room.set([]);
     this.discard.set([]);
     this.playerHP.set(STARTING_HP);
@@ -96,6 +103,9 @@ export class GameService {
     this.pendingCombatTarget.set(null);
     this.pendingForcedBarehandTarget.set(null);
     this.roomStartSnapshot.set(null);
+    this.cardsUntilBottomSegment.set(freshDeck.length);
+    this.bottomSegmentCardsRemaining.set(0);
+    this.bottomSegmentEncountered.set(false);
     this.resolutionLog.set([]);
     this.lastMessage.set('Explore the dungeon. Pick 3 cards or run away.');
     this.lastHpDelta.set(0);
@@ -115,6 +125,7 @@ export class GameService {
     const ordered = order === 'ltr' ? roomCards : [...roomCards].reverse();
 
     this.deck.set([...this.deck(), ...ordered]);
+    this.bottomSegmentCardsRemaining.update((count) => count + ordered.length);
     this.room.set([]);
     this.canSkip.set(false);
     this.lastMessage.set(`You ran away (${order.toUpperCase()}) and reshuffled the room to deck bottom.`);
@@ -137,6 +148,9 @@ export class GameService {
     this.canSkip.set(snapshot.canSkip);
     this.potionsUsedThisTurn.set(snapshot.potionsUsedThisTurn);
     this.selectedCountThisTurn.set(snapshot.selectedCountThisTurn);
+    this.cardsUntilBottomSegment.set(snapshot.cardsUntilBottomSegment);
+    this.bottomSegmentCardsRemaining.set(snapshot.bottomSegmentCardsRemaining);
+    this.bottomSegmentEncountered.set(snapshot.bottomSegmentEncountered);
     this.requiredSelectionsThisTurn.set(snapshot.room.length === 4 ? 3 : snapshot.room.length);
     this.pendingCombatTarget.set(null);
     this.pendingForcedBarehandTarget.set(null);
@@ -228,14 +242,31 @@ export class GameService {
 
     const room = [...this.room()];
     const deck = [...this.deck()];
+    let cardsUntilBottomSegment = this.cardsUntilBottomSegment();
+    let bottomSegmentCardsRemaining = this.bottomSegmentCardsRemaining();
+    let drewBottomCard = false;
 
     while (room.length < 4 && deck.length > 0) {
       const top = deck.shift();
-      if (top) room.push(top);
+      if (!top) continue;
+
+      if (cardsUntilBottomSegment > 0) {
+        cardsUntilBottomSegment -= 1;
+      } else if (bottomSegmentCardsRemaining > 0) {
+        bottomSegmentCardsRemaining -= 1;
+        drewBottomCard = true;
+      }
+
+      room.push(top);
     }
 
     this.room.set(room);
     this.deck.set(deck);
+    this.cardsUntilBottomSegment.set(cardsUntilBottomSegment);
+    this.bottomSegmentCardsRemaining.set(bottomSegmentCardsRemaining);
+    if (drewBottomCard) {
+      this.bottomSegmentEncountered.set(true);
+    }
     this.phase.set('room-ready');
     this.potionsUsedThisTurn.set(0);
     this.selectedCountThisTurn.set(0);
@@ -254,6 +285,11 @@ export class GameService {
       return;
     }
 
+    if (drewBottomCard) {
+      this.lastMessage.set('End game reached: you are now facing cards shuffled into the deck bottom.');
+      return;
+    }
+
     this.lastMessage.set('Room ready. Resolve your cards.');
   }
 
@@ -267,6 +303,9 @@ export class GameService {
       canSkip: this.canSkip(),
       potionsUsedThisTurn: this.potionsUsedThisTurn(),
       selectedCountThisTurn: this.selectedCountThisTurn(),
+      cardsUntilBottomSegment: this.cardsUntilBottomSegment(),
+      bottomSegmentCardsRemaining: this.bottomSegmentCardsRemaining(),
+      bottomSegmentEncountered: this.bottomSegmentEncountered(),
     });
   }
 
