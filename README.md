@@ -42,6 +42,17 @@ ng build
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
+## GitHub Pages Deployment
+
+This repository is configured to deploy automatically to GitHub Pages on every push to `main` using [`.github/workflows/deploy-pages.yml`](/Users/luc/portfoliowork/ScoundrelJS/.github/workflows/deploy-pages.yml).
+
+Required GitHub setting:
+
+1. Open `Settings` -> `Pages` in the GitHub repository.
+2. Set `Source` to `GitHub Actions`.
+
+After that, every push to `main` will rebuild and redeploy the site.
+
 ## Running unit tests
 
 To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
