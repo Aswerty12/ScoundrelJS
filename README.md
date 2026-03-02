@@ -2,6 +2,8 @@
 
 First project made using Codex. Provided input was the original scoundrel rules as provided by  Zach Gage and Kurt Bieg, as well as a plan overview I had generated using Gemini a few months earlier alongside art assets detailed in CARD_ASSETs_CREDITS.md . Project was one-shot created on a free plan with some additional quality of life features coming from the planning stage and realizing the advantages of the digital format format for turn taking, and from pair-programming with codex via testing features and locating where additional features and details should be needed.
 
+Test on if this actually does anything for making it update.
+
 Overall implementation time 2 hours spread over two days. 
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.0.
