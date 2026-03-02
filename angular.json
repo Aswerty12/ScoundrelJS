@@ -27,7 +27,7 @@
               {
                 "glob": "**/*",
                 "input": "playing-cards",
-                "output": "/playing-cards/"
+                "output": "playing-cards/"
               }
             ],
             "styles": [

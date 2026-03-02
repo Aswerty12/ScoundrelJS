@@ -9,7 +9,7 @@ function makeCard(id: string, suit: Suit, rank: Rank): Card {
     rank,
     value: rankToValue(rank),
     type: cardTypeFromSuit(suit),
-    imagePath: `/playing-cards/${suit}_${rank}.png`,
+    imagePath: `playing-cards/${suit}_${rank}.png`,
   };
 }
 
