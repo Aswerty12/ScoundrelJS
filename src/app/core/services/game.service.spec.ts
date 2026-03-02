@@ -201,6 +201,9 @@ describe('GameService', () => {
       canSkip: true,
       potionsUsedThisTurn: 0,
       selectedCountThisTurn: 0,
+      cardsUntilBottomSegment: 1,
+      bottomSegmentCardsRemaining: 0,
+      bottomSegmentEncountered: false,
     });
 
     service.phase.set('room-ready');

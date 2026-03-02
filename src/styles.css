@@ -23,3 +23,10 @@ body {
 button {
   font: inherit;
 }
+
+.endgame-pulse > section,
+.endgame-pulse > app-hud > section,
+.endgame-pulse > app-action-panel > section {
+  border-color: color-mix(in srgb, var(--scoundrel-gold) 35%, black 10%);
+  box-shadow: 0 8px 20px rgba(217, 119, 6, 0.08);
+}

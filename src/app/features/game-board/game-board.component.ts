@@ -8,11 +8,22 @@ import { HudComponent } from '../hud/hud.component';
 import { cardStateAnimation } from '../../shared/animations/card.animations';
 import { CombatChoiceModalComponent } from '../../shared/ui/combat-choice-modal/combat-choice-modal.component';
 import { EndGameModalComponent } from '../../shared/ui/end-game-modal/end-game-modal.component';
+import { DeckPeekModalComponent } from '../../shared/ui/deck-peek-modal/deck-peek-modal.component';
+import { RulesReminderModalComponent } from '../../shared/ui/rules-reminder-modal/rules-reminder-modal.component';
 
 @Component({
   selector: 'app-game-board',
   standalone: true,
-  imports: [CommonModule, ActionPanelComponent, CardComponent, HudComponent, CombatChoiceModalComponent, EndGameModalComponent],
+  imports: [
+    CommonModule,
+    ActionPanelComponent,
+    CardComponent,
+    HudComponent,
+    CombatChoiceModalComponent,
+    EndGameModalComponent,
+    DeckPeekModalComponent,
+    RulesReminderModalComponent,
+  ],
   templateUrl: './game-board.component.html',
   animations: [cardStateAnimation],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -21,6 +32,8 @@ export class GameBoardComponent {
   readonly game = inject(GameService);
 
   private readonly hoveredCardId = signal<string | null>(null);
+  readonly deckPeekVisible = signal<boolean>(false);
+  readonly rulesReminderVisible = signal<boolean>(false);
 
   readonly combatChoiceVisible = computed(() => !!this.game.pendingCombatTarget());
   readonly combatMonsterValue = computed(() => this.game.pendingCombatTarget()?.value ?? 0);
@@ -47,5 +60,21 @@ export class GameBoardComponent {
   previewFor(card: Card): string | null {
     if (this.hoveredCardId() !== card.id) return null;
     return this.game.getDamagePreview(card);
+  }
+
+  openDeckPeek(): void {
+    this.deckPeekVisible.set(true);
+  }
+
+  closeDeckPeek(): void {
+    this.deckPeekVisible.set(false);
+  }
+
+  openRulesReminder(): void {
+    this.rulesReminderVisible.set(true);
+  }
+
+  closeRulesReminder(): void {
+    this.rulesReminderVisible.set(false);
   }
 }

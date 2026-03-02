@@ -26,6 +26,9 @@ export interface TurnSnapshot {
   canSkip: boolean;
   potionsUsedThisTurn: number;
   selectedCountThisTurn: number;
+  cardsUntilBottomSegment: number;
+  bottomSegmentCardsRemaining: number;
+  bottomSegmentEncountered: boolean;
 }
 
 export interface GameOutcome {
